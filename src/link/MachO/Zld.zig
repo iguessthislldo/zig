@@ -15,6 +15,7 @@ const reloc = @import("reloc.zig");
 const Allocator = mem.Allocator;
 const Archive = @import("Archive.zig");
 const CodeSignature = @import("CodeSignature.zig");
+const Dylib = @import("Dylib.zig");
 const Object = @import("Object.zig");
 const Symbol = @import("Symbol.zig");
 const Trie = @import("Trie.zig");
@@ -35,6 +36,7 @@ stack_size: u64 = 0,
 
 objects: std.ArrayListUnmanaged(*Object) = .{},
 archives: std.ArrayListUnmanaged(*Archive) = .{},
+dylibs: std.ArrayListUnmanaged(*Dylib) = .{},
 
 load_commands: std.ArrayListUnmanaged(LoadCommand) = .{},
 
@@ -151,6 +153,12 @@ pub fn deinit(self: *Zld) void {
     }
     self.archives.deinit(self.allocator);
 
+    for (self.dylibs.items) |dylib| {
+        dylib.deinit();
+        self.allocator.destroy(dylib);
+    }
+    self.dylibs.deinit(self.allocator);
+
     self.mappings.deinit(self.allocator);
     self.unhandled_sections.deinit(self.allocator);
 
@@ -176,11 +184,7 @@ pub fn closeFiles(self: Zld) void {
     if (self.file) |f| f.close();
 }
 
-const LinkArgs = struct {
-    stack_size: ?u64 = null,
-};
-
-pub fn link(self: *Zld, files: []const []const u8, out_path: []const u8, args: LinkArgs) !void {
+pub fn link(self: *Zld, files: []const []const u8, shared_libs: []const []const u8, out_path: []const u8) !void {
     if (files.len == 0) return error.NoInputFiles;
     if (out_path.len == 0) return error.EmptyOutputPath;
 
@@ -214,7 +218,6 @@ pub fn link(self: *Zld, files: []const []const u8, out_path: []const u8, args: L
         .read = true,
         .mode = if (std.Target.current.os.tag == .windows) 0 else 0o777,
     });
-    self.stack_size = args.stack_size orelse 0;
 
     try self.populateMetadata();
     try self.parseInputFiles(files);
