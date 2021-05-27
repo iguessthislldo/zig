@@ -58,6 +58,7 @@ enum TargetSubsystem {
 // ABI warning
 // Synchronize with std.Target.Os.Tag and target.cpp::os_list
 enum Os {
+    OsGeorgios,
     OsFreestanding,
     OsAnanas,
     OsCloudABI,

@@ -29,6 +29,7 @@ const elf = std.elf;
 const dl = @import("dynamic_library.zig");
 const MAX_PATH_BYTES = std.fs.MAX_PATH_BYTES;
 
+pub const georgios = @import("os/georgios.zig");
 pub const darwin = @import("os/darwin.zig");
 pub const dragonfly = @import("os/dragonfly.zig");
 pub const freebsd = @import("os/freebsd.zig");
@@ -75,6 +76,7 @@ else switch (builtin.os.tag) {
     .dragonfly => dragonfly,
     .wasi => wasi,
     .windows => windows,
+    .georgios => georgios,
     else => struct {},
 };
 

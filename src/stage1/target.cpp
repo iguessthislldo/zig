@@ -86,6 +86,7 @@ static const ZigLLVM_VendorType vendor_list[] = {
 };
 
 static const Os os_list[] = {
+    OsGeorgios,
     OsFreestanding,
     OsAnanas,
     OsCloudABI,
@@ -215,6 +216,7 @@ Os target_os_enum(size_t index) {
 
 ZigLLVM_OSType get_llvm_os_type(Os os_type) {
     switch (os_type) {
+        case OsGeorgios:
         case OsFreestanding:
         case OsOpenCL:
         case OsGLSL450:
@@ -302,6 +304,7 @@ const char *target_os_name(Os os_type) {
             return "uefi";
         case OsOther:
             return "other";
+        case OsGeorgios:
         case OsAnanas:
         case OsCloudABI:
         case OsDragonFly:
@@ -618,6 +621,7 @@ uint32_t target_arch_largest_atomic_bits(ZigLLVM_ArchType arch) {
 
 uint32_t target_c_type_size_in_bits(const ZigTarget *target, CIntType id) {
     switch (target->os) {
+        case OsGeorgios:
         case OsFreestanding:
         case OsOther:
             switch (target->arch) {
@@ -991,6 +995,7 @@ ZigLLVM_EnvironmentType target_default_abi(ZigLLVM_ArchType arch, Os os) {
         case OsHermitCore:
         case OsOther:
             return ZigLLVM_EABI;
+        case OsGeorgios:
         case OsOpenBSD:
         case OsMacOSX:
         case OsFreeBSD:

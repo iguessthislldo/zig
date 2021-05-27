@@ -104,6 +104,7 @@ pub const CrossTarget = struct {
 
     fn updateOsVersionRange(self: *CrossTarget, os: Target.Os) void {
         switch (os.tag) {
+            .georgios,
             .freestanding,
             .ananas,
             .cloudabi,
@@ -717,6 +718,7 @@ pub const CrossTarget = struct {
         if (it.next() == null) return;
 
         switch (tag) {
+            .georgios,
             .freestanding,
             .ananas,
             .cloudabi,

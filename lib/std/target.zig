@@ -21,6 +21,7 @@ pub const Target = struct {
         version_range: VersionRange,
 
         pub const Tag = enum {
+            georgios,
             freestanding,
             ananas,
             cloudabi,
@@ -226,6 +227,7 @@ pub const Target = struct {
             /// bases its abstractions on.
             pub fn default(tag: Tag) VersionRange {
                 switch (tag) {
+                    .georgios,
                     .freestanding,
                     .ananas,
                     .cloudabi,
@@ -383,6 +385,7 @@ pub const Target = struct {
                 .haiku,
                 => true,
 
+                .georgios,
                 .linux,
                 .windows,
                 .freestanding,
@@ -487,6 +490,7 @@ pub const Target = struct {
                 .hermit,
                 .other,
                 => return .eabi,
+                .georgios,
                 .openbsd,
                 .macos,
                 .freebsd,
@@ -1583,6 +1587,7 @@ pub const Target = struct {
 
             // Operating systems in this list have been verified as not having a standard
             // dynamic linker path.
+            .georgios,
             .freestanding,
             .uefi,
             .windows,

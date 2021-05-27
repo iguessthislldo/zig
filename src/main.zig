@@ -1764,6 +1764,8 @@ fn buildOutputType(
     defer if (libc_installation) |*l| l.deinit(gpa);
 
     if (libc_paths_file) |paths_file| {
+        std.debug.warn("HERE\n", .{});
+        // std.debug.warn("paths_file: {s}\n", .{paths_file});
         libc_installation = LibCInstallation.parse(gpa, paths_file) catch |err| {
             fatal("unable to parse libc paths file: {s}", .{@errorName(err)});
         };

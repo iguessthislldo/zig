@@ -196,6 +196,7 @@ pub fn supportsStackProbing(target: std.Target) bool {
 
 pub fn osToLLVM(os_tag: std.Target.Os.Tag) llvm.OSType {
     return switch (os_tag) {
+        .georgios => .UnknownOS,
         .freestanding, .other, .opencl, .glsl450, .vulkan => .UnknownOS,
         .windows, .uefi => .Win32,
         .ananas => .Ananas,

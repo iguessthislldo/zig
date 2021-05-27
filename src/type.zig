@@ -2603,7 +2603,7 @@ pub const CType = enum {
     pub fn sizeInBits(self: CType, target: Target) u16 {
         const arch = target.cpu.arch;
         switch (target.os.tag) {
-            .freestanding, .other => switch (target.cpu.arch) {
+            .georgios, .freestanding, .other => switch (target.cpu.arch) {
                 .msp430 => switch (self) {
                     .short,
                     .ushort,

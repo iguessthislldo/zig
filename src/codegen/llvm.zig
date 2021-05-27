@@ -78,6 +78,7 @@ pub fn targetTriple(allocator: *Allocator, target: std.Target) ![:0]u8 {
     };
 
     const llvm_os = switch (target.os.tag) {
+        .georgios => "unknown",
         .freestanding => "unknown",
         .ananas => "ananas",
         .cloudabi => "cloudabi",
